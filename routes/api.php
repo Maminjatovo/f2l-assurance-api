@@ -39,6 +39,7 @@ Route::post('users/email/{id}', [UserController::class, 'updateEmail']);
 Route::post('users/password/{id}', [UserController::class, 'updatePassword']);
 Route::get('clients', [UserController::class, 'findAllClients']);
 Route::get('clientInfo/{id}', [UserController::class, 'getDetailsClient']);
+Route::post('search', [UserController::class, 'searchUser']);
 
 Route::get('send-email', [SendEmailController::class, 'index']);
 

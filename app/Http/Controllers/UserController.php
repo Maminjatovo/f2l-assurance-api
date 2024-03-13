@@ -71,15 +71,18 @@ class UserController extends Controller
             $param = $request->input('key');
             $offset = $request->input('offset');
             $limit = $request->input('limit');
-            $users = User::with('role');
+            $users = User::with('contrats');
 
-                if($param)
-                {
-                    $users = User:: where(function ($query) use ($param) {
+                if ($param) {
+                    $users->where(function ($query) use ($param) {
                         $query->where('email', 'like', "%$param%")
-                        ->orWhere('first_name', 'like', "%$param%")->
-                        orWhere('last_name', 'like', "%$param%");
+                        ->orWhere('first_name', 'like', "%$param%")
+                        ->orWhere('registration_number', 'like', "%$param%")
+                        ->orWhere('last_name', 'like', "%$param%");
+                    })->orWhereHas('contrats', function ($query) use ($param) {
+                        $query->where('title', 'like', "%$param%");
                     });
+
                 }
             $users->orderBy('id', 'desc');
             $userCount = $users->count();
