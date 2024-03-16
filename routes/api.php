@@ -58,6 +58,16 @@ Route::post('login', [AuthController::class,'login']);
 Route::post('logout', [AuthController::class,'logout']);
 Route::post('refresh', [AuthController::class,'refresh']);
 Route::post('checkToken', [AuthController::class,'checkToken']);
+Route::post('logCli', [AuthController::class,'loginClient']);
+Route::post('validateLog', [AuthController::class,'validateLogin']);
+Route::post('registerCli', [AuthController::class,'registerClient']);
+Route::post('validateReg', [AuthController::class,'validateRegister']);
+
+
+Route::post('optCode', [OtpController::class,'sendOtpCode']);
+Route::post('verifyCode', [OtpController::class,'verifyOTP']);
+
+
 
 
 

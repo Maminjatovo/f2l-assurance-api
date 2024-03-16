@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
+
 class DocumentController extends Controller
 {
 
@@ -18,7 +19,6 @@ class DocumentController extends Controller
             $this->middleware('auth:api');
         }
     }*/
-
 
     /**
      * Store a newly created resource in storage.

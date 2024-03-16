@@ -24,7 +24,6 @@ class ContratController extends Controller
         try {
             $user = User::findOrFail($id);
             $contrats = Contrat::where('user_id', $id)->with('documents')->get();
-
             return response()->json(['status' => 'success', 'contrats' => $contrats ,'user'=>$user]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
