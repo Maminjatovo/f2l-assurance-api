@@ -129,12 +129,8 @@ class AuthController extends Controller
     public function loginClient(Request $request)
     {
     try {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('registration_number','password');
         $phoneNumber = $request->password;
 
         $token = Auth::attempt($credentials);
@@ -142,7 +138,7 @@ class AuthController extends Controller
         if (!$token) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Mot de passe ou email invalide',
+                'message' => 'Numéro de téléphone ou enregistrement invalide',
             ], 401);
         }
 
@@ -171,9 +167,9 @@ class AuthController extends Controller
 public function validateLogin(Request $request)
 {
     try {
-    $phoneNumber = $request->phone_number;
     $otp = $request->opt_code;
-    $credentials = $request->only('email', 'password');
+    $credentials = $request->only('registration_number', 'password');
+    $phoneNumber =  $credentials['password'];
     $token = Auth::attempt($credentials);
 
     $twilioSid = getenv("TWILIO_SID");
