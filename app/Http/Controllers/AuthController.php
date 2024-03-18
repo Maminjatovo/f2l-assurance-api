@@ -16,34 +16,22 @@ class AuthController extends Controller
     public function registerClient(Request $request)
     {
         try {
+            $phoneNumber = $request->phone;
 
-                $request->validate([
-                    'email' => 'required|string|email|max:255|unique:users',
-                    'password' => 'required|string|min:6',
-                    'first_name' => 'required|string|min:3',
-                    'last_name' => 'required|string|max:255'
-                ], [
-                    'email.required' => 'Le champ email est requis.',
-                    'email.email' => 'L\'email doit être une adresse email valide.',
-                    'email.unique' => 'L\'adresse email est déjà utilisée.',
-                    'password.required' => 'Le champ mot de passe est requis.',
-                    'password.min' => 'Le mot de passe doit avoir au moins :min caractères.',
-                    'first_name.required' => 'Le champ prénom est requis.',
-                    'first_name.min' => 'Le nom doit contenir au moins :min caractères.',
-                    'last_name.required' => 'Le champ nom est requis.',
-                    'last_name.min' => 'Le prénom doit avoir au moins :min caractères.'
-                ]);
-                $phoneNumber = $request->password;
+            $validatedData = $request->validate([
+                'email' => 'required|email|unique:users,email',
+                'phone' => 'required|unique:users,phone',
+                'registration_number' => 'required|unique:users,registration_number',
+                'first_name' => 'required',
+                'last_name' => 'required'
+            ]);
 
-            $user =[
-                'is_admin' => $request->is_admin,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'registration_number' => $request->registration_number,
-                'phone' => $request->phone,
-                'is_valid' => $request->is_valid
+            $user  = [
+                'email' => $validatedData['email'],
+                'phone' => $validatedData['phone'],
+                'registration_number' => $validatedData['registration_number'],
+                'first_name' => $validatedData['first_name'],
+                'last_name' => $validatedData['last_name'],
             ];
 
             $twilioSid = getenv("TWILIO_SID");
@@ -72,7 +60,7 @@ class AuthController extends Controller
     public function validateRegister(Request $request)
     {
         try {
-            $phoneNumber = $request->phone_number;
+            $phoneNumber = $request->phone;
             $otp = $request->opt_code;
 
             $twilioSid = getenv("TWILIO_SID");
@@ -96,14 +84,14 @@ class AuthController extends Controller
                 }
 
             $user = User::create([
-                'is_admin' => $request->is_admin,
+                'is_admin' => 0,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($request->phone),
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'registration_number' => $request->registration_number,
                 'phone' => $request->phone,
-                'is_valid' => $request->is_valid
+                'is_valid' => 0
             ]);
 
             $token = Auth::login($user);
