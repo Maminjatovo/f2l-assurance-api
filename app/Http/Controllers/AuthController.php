@@ -227,17 +227,7 @@ public function validateLogin(Request $request)
                 'message' => 'Mot de passe ou email invalide',
             ], 401);
         }
-        //
-        $twilioSid = getenv("TWILIO_SID");
-        $twilioToken = getenv("TWILIO_AUTH_TOKEN");
-        $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
-        $twilio = new Client($twilioSid, $twilioToken);
 
-        $verification = $twilio->verify->v2->services($twilio_verify_sid)
-            ->verifications
-            ->create($phoneNumber, "sms");
-
-        //
         $user = Auth::user();
         $data= [
             'first_name' => $user->first_name,
