@@ -11,9 +11,9 @@ use Illuminate\Queue\SerializesModels;
 
 class SendMail extends Mailable
 {
+
     use Queueable, SerializesModels;
     protected $recipient;
-    protected $attachmentLocation;
     public $subject;
     public $content;
     /**
@@ -21,10 +21,9 @@ class SendMail extends Mailable
      *
      * @return void
      */
-    public function __construct($recipient, $attachmentLocation, $subject, $content)
+    public function __construct($recipient, $subject, $content)
     {
         $this->recipient = $recipient;
-        $this->attachmentLocation = $attachmentLocation;
         $this->subject = $subject;
         $this->content = $content;
     }
@@ -60,11 +59,10 @@ class SendMail extends Mailable
         public function build()
         {
             // your attachment location
-            return $this->from($this->content, 'Expéditeur')
+            return $this->from('tsymiova@gmail.com')
                         ->view('welcome')
-                        ->attach($this->attachmentLocation)
                         ->to($this->recipient);
-                        
+
         }
     /**
      * Get the attachments for the message.
@@ -75,4 +73,20 @@ class SendMail extends Mailable
     {
         return [];
     }
+
+     // use Queueable, SerializesModels;
+
+    // public $message;
+
+    // public function __construct($message)
+    // {
+    //     $this->message = $message;
+    // }
+
+    // public function build()
+    // {
+    //     return $this->from('jrmanouhoseah@gmail.com', 'Playbaka')
+    //                 ->subject('Sujet de email')
+    //                 ->view('welcome');
+    // }
 }
