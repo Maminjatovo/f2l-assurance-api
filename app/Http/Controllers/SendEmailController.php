@@ -45,6 +45,8 @@ class SendEmailController extends Controller
     }
     public function sendEmail(Request $request)
     {
+
+        $mailToAddress = env('MAIL_TO_ADDRESS');
         // Validez les données du formulaire
         $request->validate([
             'nom' => 'required|string',
@@ -61,7 +63,7 @@ class SendEmailController extends Controller
             'message' => $request->message,
         ];
 
-        Mail::to('danietanjoniaina1309@gmail.com')->send(new ContactFormMail($emailData));
+        Mail::to($mailToAddress)->send(new ContactFormMail($emailData));
 
         return response()->json(['message' => 'Email envoyé avec succès'], 200);
     }
