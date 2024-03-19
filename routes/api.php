@@ -42,6 +42,7 @@ Route::get('clientInfo/{id}', [UserController::class, 'getDetailsClient']);
 Route::post('search', [UserController::class, 'searchUser']);
 
 Route::get('send-email', [SendEmailController::class, 'index']);
+Route::post('sendemail', [SendEmailController::class, 'sendEmail']);
 
 Route::get('contrats/{id}', [ContratController::class, 'index']);
 Route::post('contrats', [ContratController::class, 'store']);
